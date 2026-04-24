@@ -1,10 +1,10 @@
-package com.stockmarket.backend;
+package com.stockmarket.stockmarket_core;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class BackendApplicationTests {
+class StockmarketCoreApplicationTests {
 
 	@Test
 	void contextLoads() {
