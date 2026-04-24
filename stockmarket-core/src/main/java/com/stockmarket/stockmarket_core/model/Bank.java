@@ -26,7 +26,7 @@ public class Bank {
     private String stockSymbol;
 
     @MapsId
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "stock_symbol")
     private Stock stock;
 

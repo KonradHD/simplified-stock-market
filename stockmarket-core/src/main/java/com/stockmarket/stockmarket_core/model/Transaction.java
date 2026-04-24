@@ -4,9 +4,9 @@ package com.stockmarket.stockmarket_core.model;
 import java.time.LocalDateTime;
 
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.resource.transaction.spi.TransactionStatus;
 
 import com.stockmarket.stockmarket_core.utils.types.Action;
+import com.stockmarket.stockmarket_core.utils.types.TransactionStatus;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

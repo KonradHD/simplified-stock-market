@@ -32,7 +32,8 @@ public class Stock {
     private String name;
 
     @Column(nullable = false)
-    private BigDecimal price;
+    @Builder.Default
+    private BigDecimal price = BigDecimal.ONE;
 
     @OneToOne(mappedBy="stock", cascade=CascadeType.ALL, fetch=FetchType.LAZY)
     private Bank bank;
