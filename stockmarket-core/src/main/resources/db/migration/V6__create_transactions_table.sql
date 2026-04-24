@@ -3,7 +3,7 @@ CREATE TABLE IF NOT EXISTS transactions (
     wallet_id BIGINT NOT NULL,
     stock_symbol VARCHAR(20) NOT NULL,
     action VARCHAR(20) NOT NULL CHECK(action in ('BUY', 'SELL')),
-    status VARCHAR(20) NOT NULL,
+    status VARCHAR(20) NOT NULL CHECK(status in ('SUCCESS', 'PENDING', 'FAILED')),
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     quantity INTEGER NOT NULL CHECK(quantity >= 0),
     CONSTRAINT fk_transactions_wallet_id FOREIGN KEY (wallet_id) REFERENCES wallets(id),
