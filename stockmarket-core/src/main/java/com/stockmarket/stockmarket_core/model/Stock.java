@@ -28,7 +28,7 @@ public class Stock {
     @Id
     private String symbol;
     
-    @Column(nullable = false)
+    @Column(nullable = true)
     private String name;
 
     @Column(nullable = false)

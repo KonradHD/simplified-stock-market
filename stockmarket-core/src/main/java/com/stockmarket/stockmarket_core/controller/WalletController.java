@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.stockmarket.stockmarket_core.dto.StockDTO;
 import com.stockmarket.stockmarket_core.dto.wallet.TradeActionRequest;
-
 import static com.stockmarket.stockmarket_core.dto.wallet.WalletsResponse.createWalletsResponse;
 import com.stockmarket.stockmarket_core.service.StockService;
 import com.stockmarket.stockmarket_core.service.TradingService;
@@ -23,6 +22,7 @@ import com.stockmarket.stockmarket_core.service.WalletService;
 import com.stockmarket.stockmarket_core.utils.ResponseMessage;
 import com.stockmarket.stockmarket_core.utils.types.Action;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -40,7 +40,7 @@ public class WalletController {
     public ResponseEntity<ResponseMessage> makeTransaction(
         @PathVariable("wallet_id") Long walletId,
         @PathVariable("stock_name") String stockSymbolInput,
-        @RequestBody TradeActionRequest requestBody){
+        @RequestBody @Valid TradeActionRequest requestBody){
 
             Action type = requestBody.type();
             String stockSymbol = stockSymbolInput.toUpperCase();
