@@ -5,11 +5,16 @@ import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Limit;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.stockmarket.stockmarket_core.dto.log.LogDTO;
 import static com.stockmarket.stockmarket_core.dto.log.LogDTO.createLogDTO;
 import com.stockmarket.stockmarket_core.model.AuditLog;
+import com.stockmarket.stockmarket_core.model.Stock;
+import com.stockmarket.stockmarket_core.model.Wallet;
 import com.stockmarket.stockmarket_core.repository.AuditLogRepository;
+import com.stockmarket.stockmarket_core.utils.types.LogActionType;
 import com.stockmarket.stockmarket_core.utils.types.LogStatus;
 
 import lombok.RequiredArgsConstructor;
@@ -34,5 +39,43 @@ public class AuditLogService {
                                 auditLog.getStock().getSymbol()
                             ))
                     .collect(Collectors.toList());
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public void logError(Long walletId, String symbol, LogActionType actionType, String errorMessage, Integer quantity){
+
+        Wallet proxyWallet = new Wallet();
+        proxyWallet.setId(walletId);
+        Stock proxyStock = new Stock();
+        proxyStock.setSymbol(symbol);
+
+        AuditLog auditLog = AuditLog.builder()
+                                .wallet(proxyWallet)
+                                .stock(proxyStock)
+                                .actionType(actionType)
+                                .status(LogStatus.ERROR)
+                                .info(errorMessage)
+                                .quantity(quantity)
+                                .build();
+        logRepository.save(auditLog);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public void logWarning(Long walletId, String symbol, LogActionType actionType, String errorMessage, Integer quantity){
+
+        Wallet proxyWallet = new Wallet();
+        proxyWallet.setId(walletId);
+        Stock proxyStock = new Stock();
+        proxyStock.setSymbol(symbol);
+
+        AuditLog auditLog = AuditLog.builder()
+                                .wallet(proxyWallet)
+                                .stock(proxyStock)
+                                .actionType(actionType)
+                                .status(LogStatus.WARN)
+                                .info(errorMessage)
+                                .quantity(quantity)
+                                .build();
+        logRepository.save(auditLog);
     }
 }

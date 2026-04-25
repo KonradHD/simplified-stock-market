@@ -16,36 +16,43 @@ import com.stockmarket.stockmarket_core.utils.ResponseMessage;
 public class GlobalExceptionHandler {
     
     @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity<ResponseMessage> handleIllegalArgumentException(IllegalArgumentException e){
+    public ResponseEntity<ResponseMessage> handleIllegalArgumentExceptions(IllegalArgumentException e){
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
                 new ResponseMessage("Error", e.getMessage())
             );
     }
 
     @ExceptionHandler(StockNotFoundException.class)
-    public ResponseEntity<ResponseMessage> handleStockNotFoundException(StockNotFoundException e){
+    public ResponseEntity<ResponseMessage> handleStockNotFoundExceptions(StockNotFoundException e){
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
                 new ResponseMessage("Error", e.getMessage())
             );
     }
 
     @ExceptionHandler(NotEnoughResourcesException.class)
-    public ResponseEntity<ResponseMessage> handleNotEnoughResourcesException(NotEnoughResourcesException e){
+    public ResponseEntity<ResponseMessage> handleNotEnoughResourcesExceptions(NotEnoughResourcesException e){
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
                 new ResponseMessage("Error", e.getMessage())
             );
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<Map<String, String>> handleValidationExceptions(MethodArgumentNotValidException ex) {
+    public ResponseEntity<Map<String, String>> handleValidationExceptions(MethodArgumentNotValidException e) {
         
         Map<String, String> errors = new HashMap<>();
-        ex.getBindingResult().getAllErrors().forEach((error) -> {
+        e.getBindingResult().getAllErrors().forEach((error) -> {
             String fieldName = ((FieldError) error).getField();
             String errorMessage = error.getDefaultMessage();
             errors.put(fieldName, errorMessage);
         });
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors);
+    }
+
+    @ExceptionHandler(IllegalStateException.class)
+     public ResponseEntity<ResponseMessage> handleIllegalStateExceptions(IllegalStateException e) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
+                new ResponseMessage("Error", e.getMessage())
+            );
     }
 }
