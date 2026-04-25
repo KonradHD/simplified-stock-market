@@ -1,6 +1,7 @@
 package com.stockmarket.stockmarket_core.service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.stockmarket.stockmarket_core.dto.wallet.WalletInventoryDTO;
 import static com.stockmarket.stockmarket_core.dto.wallet.WalletInventoryDTO.createWalletInventoryDTO;
 import com.stockmarket.stockmarket_core.model.WalletInventory;
+import com.stockmarket.stockmarket_core.model.WalletInventoryId;
 import com.stockmarket.stockmarket_core.repository.WalletInventoryRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -25,5 +27,17 @@ public class WalletInventoryService {
         return inventories.stream()
                     .map(inv -> createWalletInventoryDTO(inv.getStock().getSymbol(), inv.getQuantity()))
                     .collect(Collectors.toList());
+    }
+
+
+    public Integer getInventoryQuantity(Long walletId, String stockSymbol){
+        WalletInventoryId inventoryId = new WalletInventoryId(walletId, stockSymbol);
+
+        Optional<WalletInventory> inventory = walletInventoryRepository.findById(inventoryId);
+
+        if(inventory.isPresent()){
+            return inventory.get().getQuantity();
+        }
+        return 0;
     }
 }

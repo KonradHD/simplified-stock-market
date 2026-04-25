@@ -37,24 +37,26 @@ public class WalletController {
     
     @PostMapping(value = "/{wallet_id}/stocks/{stock_name}", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ResponseMessage> makeTransaction(
-        @PathVariable Long wallet_id,
-        @PathVariable String stock_name,
+        @PathVariable("wallet_id") Long walletId,
+        @PathVariable("stock_name") String stockSymbolInput,
         @RequestBody TradeActionRequest requestBody){
+
             Action type = requestBody.type();
+            String stockSymbol = stockSymbolInput.toUpperCase();
             log.info("Received transaction request, type: {}", type.toString());
 
-            if(!stockService.stockExists(stock_name)){
+            if(!stockService.stockExists(stockSymbol)){
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
                     new ResponseMessage("Error", "Given stock symbol does not exist")
                 );
             }
 
             if(type == Action.BUY){
-                tradingService.buyStock(wallet_id, stock_name, 1);
+                tradingService.buyStock(walletId, stockSymbol, 1);
             }
 
             if(type == Action.SELL){
-                tradingService.sellStock(wallet_id, stock_name, 1);
+                tradingService.sellStock(walletId, stockSymbol, 1);
             }
 
             return ResponseEntity.status(HttpStatus.OK).body(
@@ -63,18 +65,42 @@ public class WalletController {
     }
 
     @GetMapping(value = "/{wallet_id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> walletData(@PathVariable Long wallet_id){
+    public ResponseEntity<?> walletData(@PathVariable("wallet_id") Long walletId){
         log.info("Received request for wallet data");
 
-        if(!walletService.walletExists(wallet_id)){
+        if(!walletService.walletExists(walletId)){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
                 new ResponseMessage("Error", "Given wallet does not exist")
             );
         }
 
-        List<WalletInventoryDTO> walletInventories = walletInventoryService.getWalletInventoriesDTO(wallet_id);
+        List<WalletInventoryDTO> walletInventories = walletInventoryService.getWalletInventoriesDTO(walletId);
 
-        return ResponseEntity.status(HttpStatus.OK).body(createWalletsResponse(wallet_id, walletInventories));
+        return ResponseEntity.status(HttpStatus.OK).body(createWalletsResponse(walletId, walletInventories));
     }
 
+    @GetMapping(value = "/{wallet_id}/stocks/{stock_name}", produces=MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> walletQuantity(
+        @PathVariable("wallet_id") Long walletId, 
+        @PathVariable("stock_name") String stockSymbolInput){
+
+        String stockSymbol = stockSymbolInput.toUpperCase();
+        log.info("Received request for wallet quantity for stock: {}", stockSymbol);
+
+        if(!stockService.stockExists(stockSymbol)){
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                    new ResponseMessage("Error", "Given stock symbol does not exist")
+                );
+            }
+
+        if(!walletService.walletExists(walletId)){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                new ResponseMessage("Error", "Given wallet does not exist")
+            );
+        }
+
+        Integer quantity = walletInventoryService.getInventoryQuantity(walletId, stockSymbol);
+
+        return ResponseEntity.status(HttpStatus.OK).body(quantity);
+    }
 }
