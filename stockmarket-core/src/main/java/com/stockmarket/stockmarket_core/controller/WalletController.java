@@ -12,8 +12,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.stockmarket.stockmarket_core.dto.StockDTO;
 import com.stockmarket.stockmarket_core.dto.wallet.TradeActionRequest;
-import com.stockmarket.stockmarket_core.dto.wallet.WalletInventoryDTO;
+
 import static com.stockmarket.stockmarket_core.dto.wallet.WalletsResponse.createWalletsResponse;
 import com.stockmarket.stockmarket_core.service.StockService;
 import com.stockmarket.stockmarket_core.service.TradingService;
@@ -74,7 +75,7 @@ public class WalletController {
             );
         }
 
-        List<WalletInventoryDTO> walletInventories = walletInventoryService.getWalletInventoriesDTO(walletId);
+        List<StockDTO> walletInventories = walletInventoryService.getWalletInventoriesDTO(walletId);
 
         return ResponseEntity.status(HttpStatus.OK).body(createWalletsResponse(walletId, walletInventories));
     }
