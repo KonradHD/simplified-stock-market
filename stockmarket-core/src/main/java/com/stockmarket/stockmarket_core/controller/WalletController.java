@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.stockmarket.stockmarket_core.dto.StockDTO;
+import com.stockmarket.stockmarket_core.dto.wallet.NewWalletResponse;
 import com.stockmarket.stockmarket_core.dto.wallet.TradeActionRequest;
 import static com.stockmarket.stockmarket_core.dto.wallet.WalletsResponse.createWalletsResponse;
 import com.stockmarket.stockmarket_core.service.StockService;
@@ -103,5 +105,23 @@ public class WalletController {
         Integer quantity = walletInventoryService.getInventoryQuantity(walletId, stockSymbol);
 
         return ResponseEntity.status(HttpStatus.OK).body(quantity);
+    }
+
+    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<NewWalletResponse> createWallet(){
+        log.info("Received request for creating new wallet");
+
+        NewWalletResponse newWallet = walletService.createWallet();
+        return ResponseEntity.status(HttpStatus.CREATED).body(newWallet);
+    }
+
+    @DeleteMapping(value = "/{wallet_id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<ResponseMessage> deleteWallet(@PathVariable("wallet_id") Long walletId){
+        log.info("Received request for deleting wallet");
+
+        walletService.deleteWallet(walletId);
+        return ResponseEntity.status(HttpStatus.OK).body(
+            new ResponseMessage("Success", "Wallet: %d was successfully deleted".formatted(walletId))
+        );
     }
 }

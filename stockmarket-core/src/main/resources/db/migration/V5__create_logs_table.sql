@@ -1,7 +1,7 @@
 CREATE TABLE IF NOT EXISTS logs (
     id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     wallet_id BIGINT NOT NULL,
-    stock_symbol VARCHAR(20) NOT NULL,
+    stock_symbol VARCHAR(20),
     action_type VARCHAR(20) NOT NULL CHECK(
         action_type in (
             'WALLET_CREATE',
@@ -11,7 +11,7 @@ CREATE TABLE IF NOT EXISTS logs (
         )
     ),
     status VARCHAR(20) NOT NULL CHECK(status in ('INFO', 'ERROR', 'WARN')),
-    info VARCHAR(255) NOT NULL,
+    message VARCHAR(255) NOT NULL,
     quantity INTEGER,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT fk_logs_wallet_id FOREIGN KEY (wallet_id) REFERENCES wallets(id),

@@ -41,7 +41,7 @@ public class AuditLog {
     private Wallet wallet;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "stock_symbol", nullable = false)
+    @JoinColumn(name = "stock_symbol", nullable = true)
     private Stock stock;
 
     @Column(name = "action_type", nullable = false, updatable = false)
@@ -53,7 +53,7 @@ public class AuditLog {
     private LogStatus status;
 
     @Column(nullable = false)
-    private String info;
+    private String message;
 
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)

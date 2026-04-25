@@ -54,7 +54,7 @@ public class AuditLogService {
                                 .stock(proxyStock)
                                 .actionType(actionType)
                                 .status(LogStatus.ERROR)
-                                .info(errorMessage)
+                                .message(errorMessage)
                                 .quantity(quantity)
                                 .build();
         logRepository.save(auditLog);
@@ -73,7 +73,7 @@ public class AuditLogService {
                                 .stock(proxyStock)
                                 .actionType(actionType)
                                 .status(LogStatus.WARN)
-                                .info(errorMessage)
+                                .message(errorMessage)
                                 .quantity(quantity)
                                 .build();
         logRepository.save(auditLog);

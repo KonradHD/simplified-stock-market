@@ -100,7 +100,7 @@ public class TradingService {
                             .stock(bankStock.getStock())
                             .actionType(LogActionType.TRANSACTION_BUY)
                             .status(LogStatus.INFO)
-                            .info("Bank quantity and wallet inventory were updated successfully, transaction saved")
+                            .message("Bank quantity and wallet inventory were updated successfully, transaction saved")
                             .quantity(quantity)
                             .build();
             logRepository.save(auditLog);
@@ -172,7 +172,7 @@ public class TradingService {
                             .stock(bankStock.getStock())
                             .actionType(LogActionType.TRANSACTION_SELL)
                             .status(LogStatus.INFO)
-                            .info("Bank quantity and wallet inventory were updated successfully, transaction saved")
+                            .message("Bank quantity and wallet inventory were updated successfully, transaction saved")
                             .quantity(quantity)
                             .build();
             logRepository.save(auditLog);
