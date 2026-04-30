@@ -3,8 +3,6 @@ package com.stockmarket.stockmarket_core.model;
 
 import java.time.LocalDateTime;
 
-import org.hibernate.annotations.CreationTimestamp;
-
 import com.stockmarket.stockmarket_core.utils.types.Action;
 import com.stockmarket.stockmarket_core.utils.types.TransactionStatus;
 
@@ -18,6 +16,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -51,10 +50,16 @@ public class Transaction {
     @Enumerated(value = EnumType.STRING)
     private TransactionStatus status;
 
-    @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
     @Column(nullable = false, updatable = false)
     private Integer quantity;
+
+    @PrePersist
+    protected void onCreate() {
+        if (this.createdAt == null) {
+            this.createdAt = LocalDateTime.now();
+        }
+    }
 }
