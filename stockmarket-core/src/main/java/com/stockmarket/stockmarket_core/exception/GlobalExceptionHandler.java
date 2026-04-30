@@ -55,4 +55,11 @@ public class GlobalExceptionHandler {
                 new ResponseMessage("Error", e.getMessage())
             );
     }
+
+    @ExceptionHandler(WalletNotFoundException.class)
+     public ResponseEntity<ResponseMessage> handleWalletNotFoundException(WalletNotFoundException e) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
+                new ResponseMessage("Error", e.getMessage())
+            );
+    }
 }

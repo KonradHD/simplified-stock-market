@@ -8,10 +8,13 @@ import org.springframework.stereotype.Service;
 
 import com.stockmarket.stockmarket_core.dto.StockDTO;
 import static com.stockmarket.stockmarket_core.dto.StockDTO.createStockDTO;
+import static com.stockmarket.stockmarket_core.exception.WalletNotFoundException.walletNotFoundException;
 import com.stockmarket.stockmarket_core.model.WalletInventory;
 import com.stockmarket.stockmarket_core.model.WalletInventoryId;
 import com.stockmarket.stockmarket_core.repository.WalletInventoryRepository;
+import com.stockmarket.stockmarket_core.repository.WalletRepository;
 
+import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -20,8 +23,13 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class WalletInventoryService {
     private final WalletInventoryRepository walletInventoryRepository;
+    private final WalletRepository walletRepository;
 
+    @Transactional(readOnly = true)
     public List<StockDTO> getWalletInventoriesDTO(Long walletId){
+        walletRepository.findById(walletId)
+            .orElseThrow(() -> walletNotFoundException(walletId));
+
         List<WalletInventory> inventories = walletInventoryRepository.findAllByWalletId(walletId);
 
         return inventories.stream()

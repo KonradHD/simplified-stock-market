@@ -13,7 +13,7 @@ import com.stockmarket.stockmarket_core.model.Stock;
 import com.stockmarket.stockmarket_core.repository.BankRepository;
 import com.stockmarket.stockmarket_core.repository.StockRepository;
 
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 

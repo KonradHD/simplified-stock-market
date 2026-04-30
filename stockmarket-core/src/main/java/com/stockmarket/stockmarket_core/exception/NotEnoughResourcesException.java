@@ -6,6 +6,6 @@ public class NotEnoughResourcesException extends RuntimeException{
     }
 
     public static NotEnoughResourcesException notEnoughResourcesException(String message){
-        return new NotEnoughResourcesException("Not enough existing resources: " + message);
+        return new NotEnoughResourcesException("Not enough existing resources: %s".formatted(message));
     }
 }

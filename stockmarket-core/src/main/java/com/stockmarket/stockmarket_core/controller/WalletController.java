@@ -71,12 +71,6 @@ public class WalletController {
     public ResponseEntity<?> walletData(@PathVariable("wallet_id") Long walletId){
         log.info("Received request for wallet data");
 
-        if(!walletService.walletExists(walletId)){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
-                new ResponseMessage("Error", "Given wallet does not exist")
-            );
-        }
-
         List<StockDTO> walletInventories = walletInventoryService.getWalletInventoriesDTO(walletId);
 
         return ResponseEntity.status(HttpStatus.OK).body(createWalletsResponse(walletId, walletInventories));
@@ -116,12 +110,10 @@ public class WalletController {
     }
 
     @DeleteMapping(value = "/{wallet_id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ResponseMessage> deleteWallet(@PathVariable("wallet_id") Long walletId){
+    public ResponseEntity<Void> deleteWallet(@PathVariable("wallet_id") Long walletId){
         log.info("Received request for deleting wallet");
 
         walletService.deleteWallet(walletId);
-        return ResponseEntity.status(HttpStatus.OK).body(
-            new ResponseMessage("Success", "Wallet: %d was successfully deleted".formatted(walletId))
-        );
+        return ResponseEntity.noContent().build();
     }
 }

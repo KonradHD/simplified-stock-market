@@ -4,9 +4,11 @@ import java.util.Optional;
 
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import static com.stockmarket.stockmarket_core.exception.NotEnoughResourcesException.notEnoughResourcesException;
 import static com.stockmarket.stockmarket_core.exception.StockNotFoundException.stockNotFoundException;
+import static com.stockmarket.stockmarket_core.exception.WalletNotFoundException.walletNotFoundException;
 import com.stockmarket.stockmarket_core.model.AuditLog;
 import com.stockmarket.stockmarket_core.model.Bank;
 import com.stockmarket.stockmarket_core.model.Transaction;
@@ -23,7 +25,6 @@ import com.stockmarket.stockmarket_core.utils.types.LogActionType;
 import com.stockmarket.stockmarket_core.utils.types.LogStatus;
 import com.stockmarket.stockmarket_core.utils.types.TransactionStatus;
 
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -44,7 +45,7 @@ public class TradingService {
 
         try {
             Wallet wallet = walletRepository.findById(walletId)
-            .orElseThrow(() -> new IllegalArgumentException("Wallet: %s does not exist".formatted(walletId)));
+                    .orElseThrow(() -> walletNotFoundException(walletId));
             
             Optional<Bank> optBankStock = bankRepository.findByIdLocked(symbol);
             
@@ -108,7 +109,7 @@ public class TradingService {
 
         }catch(DataAccessException e){
             log.error("Database error occurred during buy process");
-            String errorMessage = "Transaction failed due to database errpr: " + e.getMessage();
+            String errorMessage = "Transaction failed due to database error: " + e.getMessage();
             logService.logError(walletId, symbol, LogActionType.TRANSACTION_BUY, errorMessage, quantity);
         
             throw new IllegalStateException("System encountered a database error. Transaction rolled back.", e);
@@ -122,7 +123,7 @@ public class TradingService {
 
         try {
             Wallet wallet = walletRepository.findById(walletId)
-                                .orElseThrow(() -> new IllegalArgumentException("Wallet: %s does not exist".formatted(walletId)));
+                                .orElseThrow(() -> walletNotFoundException(walletId));
             
             Optional<Bank> optBankStock = bankRepository.findByIdLocked(symbol);
             

@@ -5,6 +5,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.stockmarket.stockmarket_core.dto.wallet.NewWalletResponse;
 import static com.stockmarket.stockmarket_core.dto.wallet.NewWalletResponse.createWalletResponse;
+import static com.stockmarket.stockmarket_core.exception.WalletNotFoundException.walletNotFoundException;
 import com.stockmarket.stockmarket_core.model.AuditLog;
 import com.stockmarket.stockmarket_core.model.Wallet;
 import com.stockmarket.stockmarket_core.repository.AuditLogRepository;
@@ -45,7 +46,7 @@ public class WalletService {
     @Transactional
     public void deleteWallet(Long walletId){
         Wallet wallet = walletRepository.findById(walletId)
-            .orElseThrow(() -> new IllegalArgumentException("Wallet: %s does not exist".formatted(walletId)));
+            .orElseThrow(() -> walletNotFoundException(walletId));
         wallet.setIsActive(false);
 
         AuditLog auditLog = AuditLog.builder()
