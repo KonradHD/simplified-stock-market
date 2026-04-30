@@ -48,12 +48,6 @@ public class WalletController {
             String stockSymbol = stockSymbolInput.toUpperCase();
             log.info("Received transaction request, type: {}", type.toString());
 
-            if(!stockService.stockExists(stockSymbol)){
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
-                    new ResponseMessage("Error", "Given stock symbol does not exist")
-                );
-            }
-
             if(type == Action.BUY){
                 tradingService.buyStock(walletId, stockSymbol, 1);
             }
@@ -86,13 +80,13 @@ public class WalletController {
 
         if(!stockService.stockExists(stockSymbol)){
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
-                    new ResponseMessage("Error", "Given stock symbol does not exist")
+                    new ResponseMessage("Error", "Stock: %s symbol does not exist".formatted(stockSymbol))
                 );
             }
 
         if(!walletService.walletExists(walletId)){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
-                new ResponseMessage("Error", "Given wallet does not exist")
+                new ResponseMessage("Error", "Wallet: %d does not exist".formatted(walletId))
             );
         }
 

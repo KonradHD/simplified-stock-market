@@ -27,8 +27,9 @@ public class LogController {
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<AuditLogsResponse> checkLogs(){
-        log.info("Received request for all logs");
-        List<LogDTO> logs = logService.getLimitedLogsWithStatus(LogStatus.INFO, 10_000);
+        Integer limit = 10_000;
+        log.info("Received request for %d logs".formatted(limit));
+        List<LogDTO> logs = logService.getLimitedLogsWithStatus(LogStatus.INFO, limit);
 
         return ResponseEntity.status(HttpStatus.OK).body(createAuditLogsResponse(logs));
     }

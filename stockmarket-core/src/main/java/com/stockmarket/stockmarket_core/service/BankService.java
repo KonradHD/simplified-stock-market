@@ -4,16 +4,17 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.stockmarket.stockmarket_core.dto.StockDTO;
 import static com.stockmarket.stockmarket_core.dto.StockDTO.createStockDTO;
+import com.stockmarket.stockmarket_core.exception.StockNotFoundException;
 import static com.stockmarket.stockmarket_core.exception.StockNotFoundException.stockNotFoundException;
 import com.stockmarket.stockmarket_core.model.Bank;
 import com.stockmarket.stockmarket_core.model.Stock;
 import com.stockmarket.stockmarket_core.repository.BankRepository;
 import com.stockmarket.stockmarket_core.repository.StockRepository;
 
-import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -65,7 +66,7 @@ public class BankService {
 
         for (StockDTO dto : stocksDTO) {
             Bank inventory = bankRepository.findById(dto.name())
-                    .orElseThrow(() -> new IllegalStateException("Trigger was not executed: " + dto.name()));
+                    .orElseThrow(() -> new StockNotFoundException("Trigger was not executed: %s".formatted(dto.name())));
             
             inventory.setQuantity(dto.quantity());
         }

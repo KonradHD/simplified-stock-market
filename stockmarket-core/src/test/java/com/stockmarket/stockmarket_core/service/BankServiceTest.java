@@ -136,7 +136,7 @@ public class BankServiceTest {
     }
 
     @Test
-    public void bankInitializationThrowIllegalStateArgumentTest(){
+    public void bankInitializationThrowStockNotFoundExceptionArgumentTest(){
         String symbol = "AMAZ";
         StockDTO incomingStock = new StockDTO(symbol, 20); 
         List<StockDTO> requestList = List.of(incomingStock);
@@ -146,8 +146,8 @@ public class BankServiceTest {
 
         when(bankRepository.findById(symbol)).thenReturn(Optional.empty());
 
-        IllegalStateException exception = assertThrows(
-            IllegalStateException.class, 
+        StockNotFoundException exception = assertThrows(
+            StockNotFoundException.class, 
             () -> bankService.initBankState(requestList)
         );
         assertEquals("Trigger was not executed: %s".formatted(symbol), exception.getMessage());
