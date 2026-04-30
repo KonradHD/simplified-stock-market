@@ -1,0 +1,41 @@
+name: stock-market
+
+services:
+  db:
+    container_name: stock-postgres
+    hostname: postgres
+    image: postgres:latest
+    restart: unless-stopped
+    environment:
+      - 'POSTGRES_DB=stock_db'
+      - 'POSTGRES_USER=${POSTGRES_USER}'
+      - 'POSTGRES_PASSWORD=${POSTGRES_PASSWORD}'
+    ports:
+      - 5433:5432
+    volumes:
+      - stock_db:/var/lib/postgresql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -d stock_db -U $${POSTGRES_USER}" ]
+      interval: 5s
+      timeout: 30s
+      retries: 5
+      start_period: 20s
+  
+  stockmarket-core:
+    container_name: stock-core
+    restart: unless-stopped
+    build: ./stockmarket-core
+
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - 8080:8080
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/stock_db
+      - SPRING_DATASOURCE_USERNAME=${POSTGRES_USER}
+      - SPRING_DATASOURCE_PASSWORD=${POSTGRES_PASSWORD}
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=validate
+
+volumes: 
+  stock_db:
