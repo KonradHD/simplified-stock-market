@@ -77,15 +77,15 @@ The project is built on a modern Java tech stack, emphasizing containerization a
 
 To gracefully stop and remove all running containers, use:
 
-    ```bash
-    docker compose down
-    ```
+   ```bash
+   docker compose down
+   ```
 
 To stop the containers and remove all volumes:
 
-    ```bash
-    docker compose down -v
-    ```
+   ```bash
+   docker compose down -v
+   ```
 
 ## Tests
 
