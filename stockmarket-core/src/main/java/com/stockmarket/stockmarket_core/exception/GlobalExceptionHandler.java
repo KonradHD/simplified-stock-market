@@ -52,14 +52,14 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(IllegalStateException.class)
      public ResponseEntity<ResponseMessage> handleIllegalStateExceptions(IllegalStateException e) {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
-                new ResponseMessage("Error", e.getMessage())
+                new ResponseMessage("Error", "A database error occurred")
             );
     }
 
     @ExceptionHandler(WalletNotFoundException.class)
      public ResponseEntity<ResponseMessage> handleWalletNotFoundException(WalletNotFoundException e) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
-                new ResponseMessage("Error", "A database error occurred")
+                new ResponseMessage("Error", e.getMessage())
             );
     }
 }

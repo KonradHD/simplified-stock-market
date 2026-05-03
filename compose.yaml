@@ -4,38 +4,47 @@ services:
   db:
     container_name: stock-postgres
     hostname: postgres
-    image: postgres:latest
+    image: postgres:16
     restart: unless-stopped
     environment:
       - 'POSTGRES_DB=stock_db'
-      - 'POSTGRES_USER=${POSTGRES_USER}'
-      - 'POSTGRES_PASSWORD=${POSTGRES_PASSWORD}'
+      - 'POSTGRES_USER=${POSTGRES_USER:-postgres}'
+      - 'POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-postgres}'
     ports:
-      - 5433:5432
+      - 5432:5432
     volumes:
-      - stock_db:/var/lib/postgresql
+      - stock_db:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -d stock_db -U $${POSTGRES_USER}" ]
+      test: ["CMD-SHELL", "pg_isready -d stock_db -U $${POSTGRES_USER:-postgres}" ]
       interval: 5s
       timeout: 30s
       retries: 5
       start_period: 20s
   
   stockmarket-core:
-    container_name: stock-core
     restart: unless-stopped
     build: ./stockmarket-core
 
     depends_on:
       db:
         condition: service_healthy
-    ports:
-      - 8081:8080
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/stock_db
-      - SPRING_DATASOURCE_USERNAME=${POSTGRES_USER}
-      - SPRING_DATASOURCE_PASSWORD=${POSTGRES_PASSWORD}
+      - SPRING_DATASOURCE_USERNAME=${POSTGRES_USER:-postgres}
+      - SPRING_DATASOURCE_PASSWORD=${POSTGRES_PASSWORD:-postgres}
       - SPRING_JPA_HIBERNATE_DDL_AUTO=validate
+      - 'SERVER_FORWARD_HEADERS_STRATEGY=framework'
+
+  load-balancer:
+    image: nginx:latest
+    container_name: stock-nginx
+    depends_on:
+      - stockmarket-core
+    ports:
+      - "${APP_PORT}:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    restart: unless-stopped
 
 volumes: 
   stock_db:
