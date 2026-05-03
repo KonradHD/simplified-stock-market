@@ -14,7 +14,7 @@ docker compose up -d --build --scale stockmarket-core=5
 echo "Waiting for Application instances to be fully ready..."
 
 while true; do
-  HTTP_STATUS=$(curl -s -o /dev/null -w "%{http_code}" "http://localhost:${APP_PORT}/swagger-ui.html" || echo "000")
+  HTTP_STATUS=$(curl -s -L -o /dev/null -w "%{http_code}" "http://localhost:${APP_PORT}/swagger-ui.html" || echo "000")
 
   if [ "$HTTP_STATUS" == "200" ]; then
     echo ""
@@ -27,4 +27,4 @@ done
 
 echo ""
 echo "Application is READY and accepting traffic!"
-echo "Swagger UI: http://localhost:%APP_PORT%/swagger-ui.html"
+echo "Swagger UI: http://localhost:${APP_PORT}/swagger-ui.html"
