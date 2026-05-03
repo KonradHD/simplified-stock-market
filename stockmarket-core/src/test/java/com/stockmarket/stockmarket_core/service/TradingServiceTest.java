@@ -11,6 +11,7 @@ import org.mockito.ArgumentCaptor;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.isNull;
 import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -104,7 +105,7 @@ public class TradingServiceTest {
             );
             assertEquals("The stock with symbol: %s is unavailable in the Bank currently".formatted(symbol), e.getMessage());
             verify(logService).logWarning(
-                eq(walletId), eq(symbol), eq(LogActionType.TRANSACTION_BUY), anyString(), eq(quantity)
+                eq(walletId), isNull(), eq(LogActionType.TRANSACTION_BUY), anyString(), eq(quantity)
             );
             verifyNoInteractions(transactionRepository, walletInventoryRepository);
         }
@@ -239,7 +240,7 @@ public class TradingServiceTest {
             );
             assertEquals("The stock with symbol: %s is unavailable in the Bank currently".formatted(symbol), e.getMessage());
             verify(logService).logWarning(
-                eq(walletId), eq(symbol), eq(LogActionType.TRANSACTION_SELL), anyString(), eq(quantity)
+                eq(walletId), isNull(), eq(LogActionType.TRANSACTION_SELL), anyString(), eq(quantity)
             );
             verifyNoInteractions(transactionRepository, walletInventoryRepository);
         }

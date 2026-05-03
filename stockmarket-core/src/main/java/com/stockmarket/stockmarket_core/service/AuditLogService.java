@@ -36,7 +36,7 @@ public class AuditLogService {
                     .map(auditLog -> createLogDTO(
                                 auditLog.getActionType(), 
                                 auditLog.getWallet().getId(), 
-                                auditLog.getStock().getSymbol()
+                                auditLog.getStock() != null ? auditLog.getStock().getSymbol() : null
                             ))
                     .collect(Collectors.toList());
     }
@@ -46,15 +46,22 @@ public class AuditLogService {
 
         Wallet proxyWallet = new Wallet();
         proxyWallet.setId(walletId);
-        Stock proxyStock = new Stock();
-        proxyStock.setSymbol(symbol);
+        Stock proxyStock = null;
+        if (symbol != null) {
+            proxyStock = new Stock();
+            proxyStock.setSymbol(symbol);
+        }
+
+        String safeMessage = (errorMessage != null && errorMessage.length() > 255) 
+                             ? errorMessage.substring(0, 255) 
+                             : errorMessage;
 
         AuditLog auditLog = AuditLog.builder()
                                 .wallet(proxyWallet)
                                 .stock(proxyStock)
                                 .actionType(actionType)
                                 .status(LogStatus.ERROR)
-                                .message(errorMessage)
+                                .message(safeMessage)
                                 .quantity(quantity)
                                 .build();
         logRepository.save(auditLog);
@@ -65,15 +72,22 @@ public class AuditLogService {
 
         Wallet proxyWallet = new Wallet();
         proxyWallet.setId(walletId);
-        Stock proxyStock = new Stock();
-        proxyStock.setSymbol(symbol);
+        Stock proxyStock = null;
+        if (symbol != null) {
+            proxyStock = new Stock();
+            proxyStock.setSymbol(symbol);
+        }
+
+        String safeMessage = (errorMessage != null && errorMessage.length() > 255) 
+                             ? errorMessage.substring(0, 255) 
+                             : errorMessage;
 
         AuditLog auditLog = AuditLog.builder()
                                 .wallet(proxyWallet)
                                 .stock(proxyStock)
                                 .actionType(actionType)
                                 .status(LogStatus.WARN)
-                                .message(errorMessage)
+                                .message(safeMessage)
                                 .quantity(quantity)
                                 .build();
         logRepository.save(auditLog);

@@ -52,7 +52,7 @@ public class TradingService {
             if(optBankStock.isEmpty()){
                 String warnMessage = "Requested stock symbol does not exist in bank: " + symbol;
                 log.warn("Transaction was rejected. {}", warnMessage);
-                logService.logWarning(walletId, symbol, LogActionType.TRANSACTION_BUY, warnMessage, quantity);
+                logService.logWarning(walletId, null, LogActionType.TRANSACTION_BUY, warnMessage, quantity);
 
                 throw stockNotFoundException(symbol);
             }
@@ -130,7 +130,7 @@ public class TradingService {
             if(optBankStock.isEmpty()){
                 String warnMessage = "Requested stock symbol does not exist in bank: " + symbol;
                 log.warn("Transaction was rejected. {}", warnMessage);
-                logService.logWarning(walletId, symbol, LogActionType.TRANSACTION_SELL, warnMessage, quantity);
+                logService.logWarning(walletId, null, LogActionType.TRANSACTION_SELL, warnMessage, quantity);
 
                 throw stockNotFoundException(symbol);
             }
