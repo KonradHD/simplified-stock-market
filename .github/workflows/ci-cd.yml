@@ -22,9 +22,11 @@ jobs:
           distribution: "temurin"
           cache: maven
       - name: Make Maven Wrapper executable
+        working-directory: ./stockmarket-core
         run: chmod +x ./mvnw
 
       - name: Run unit and integration tests
+        working-directory: ./stockmarket-core
         run: ./mvnw test
 
   build:
