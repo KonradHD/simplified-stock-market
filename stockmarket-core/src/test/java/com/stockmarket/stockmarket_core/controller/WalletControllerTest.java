@@ -22,7 +22,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.stockmarket.stockmarket_core.dto.StockDTO;
 import com.stockmarket.stockmarket_core.dto.wallet.TradeActionRequest;
 import com.stockmarket.stockmarket_core.exception.WalletNotFoundException;
 
@@ -34,6 +33,7 @@ import com.stockmarket.stockmarket_core.service.TradingService;
 import com.stockmarket.stockmarket_core.service.WalletInventoryService;
 import com.stockmarket.stockmarket_core.service.WalletService;
 import com.stockmarket.stockmarket_core.utils.types.Action;
+import com.stockmarket.stockmarket_core.dto.stock.StockDTO;
 import com.stockmarket.stockmarket_core.dto.wallet.NewWalletResponse;
 
 import org.springframework.test.web.servlet.MockMvc;

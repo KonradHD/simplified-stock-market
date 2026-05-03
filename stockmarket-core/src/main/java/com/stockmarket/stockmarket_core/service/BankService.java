@@ -6,9 +6,10 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.stockmarket.stockmarket_core.dto.StockDTO;
-import static com.stockmarket.stockmarket_core.dto.StockDTO.createStockDTO;
+import com.stockmarket.stockmarket_core.dto.stock.StockDTO;
 import com.stockmarket.stockmarket_core.exception.StockNotFoundException;
+
+import static com.stockmarket.stockmarket_core.dto.stock.StockDTO.createStockDTO;
 import static com.stockmarket.stockmarket_core.exception.StockNotFoundException.stockNotFoundException;
 import com.stockmarket.stockmarket_core.model.Bank;
 import com.stockmarket.stockmarket_core.model.Stock;

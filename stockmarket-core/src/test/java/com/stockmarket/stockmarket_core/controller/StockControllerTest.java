@@ -20,8 +20,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.stockmarket.stockmarket_core.dto.StockDTO;
 import com.stockmarket.stockmarket_core.dto.bankInventory.BankInventoryInitRequest;
+import com.stockmarket.stockmarket_core.dto.stock.StockDTO;
 import com.stockmarket.stockmarket_core.exception.StockNotFoundException;
 import com.stockmarket.stockmarket_core.service.BankService;
 

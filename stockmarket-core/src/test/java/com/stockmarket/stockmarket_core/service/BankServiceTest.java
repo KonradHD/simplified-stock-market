@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
+import static com.stockmarket.stockmarket_core.dto.stock.StockDTO.createStockDTO;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -20,8 +21,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.stockmarket.stockmarket_core.dto.StockDTO;
-import static com.stockmarket.stockmarket_core.dto.StockDTO.createStockDTO;
+import com.stockmarket.stockmarket_core.dto.stock.StockDTO;
 import com.stockmarket.stockmarket_core.exception.StockNotFoundException;
 import com.stockmarket.stockmarket_core.model.Bank;
 import com.stockmarket.stockmarket_core.model.Stock;

@@ -13,7 +13,7 @@ import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.stockmarket.stockmarket_core.dto.StockDTO;
+import com.stockmarket.stockmarket_core.dto.stock.StockDTO;
 import com.stockmarket.stockmarket_core.exception.WalletNotFoundException;
 import com.stockmarket.stockmarket_core.model.Stock;
 import com.stockmarket.stockmarket_core.model.Wallet;

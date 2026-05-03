@@ -4,14 +4,16 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.stockmarket.stockmarket_core.dto.StockDTO;
+import com.stockmarket.stockmarket_core.dto.stock.StockDTO;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
 
 public record BankInventoryInitRequest (
     @NotEmpty(message = "Initialization stock list cannot be empty.") 
     @Valid
+    @Schema(description = "List of the initialization stocks") 
     List<StockDTO> stocks
 ) {
     @JsonCreator

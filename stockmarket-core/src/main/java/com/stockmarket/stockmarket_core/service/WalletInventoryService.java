@@ -5,16 +5,16 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import com.stockmarket.stockmarket_core.dto.StockDTO;
-import static com.stockmarket.stockmarket_core.dto.StockDTO.createStockDTO;
+import com.stockmarket.stockmarket_core.dto.stock.StockDTO;
+import static com.stockmarket.stockmarket_core.dto.stock.StockDTO.createStockDTO;
 import static com.stockmarket.stockmarket_core.exception.WalletNotFoundException.walletNotFoundException;
 import com.stockmarket.stockmarket_core.model.WalletInventory;
 import com.stockmarket.stockmarket_core.model.WalletInventoryId;
 import com.stockmarket.stockmarket_core.repository.WalletInventoryRepository;
 import com.stockmarket.stockmarket_core.repository.WalletRepository;
 
-import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 

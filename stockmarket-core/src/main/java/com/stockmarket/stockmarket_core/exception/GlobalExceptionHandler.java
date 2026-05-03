@@ -59,7 +59,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(WalletNotFoundException.class)
      public ResponseEntity<ResponseMessage> handleWalletNotFoundException(WalletNotFoundException e) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
-                new ResponseMessage("Error", e.getMessage())
+                new ResponseMessage("Error", "A database error occurred")
             );
     }
 }
