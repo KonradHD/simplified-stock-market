@@ -1,0 +1,40 @@
+name: Stock Market CI/CD
+
+on:
+  push:
+    branches: ["main", "master"]
+  pull_request:
+    branches: ["main", "master"]
+
+jobs:
+  test:
+    name: Run Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: "21"
+          distribution: "temurin"
+          cache: maven
+      - name: Make Maven Wrapper executable
+        run: chmod +x ./mvnw
+
+      - name: Run unit and integration tests
+        run: ./mvnw test
+
+  build:
+    name: Build Docker Images
+    needs: test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Test Docker Compose Build
+        run: docker compose build
